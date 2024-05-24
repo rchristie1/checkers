@@ -15,5 +15,5 @@ export type BoardType = PieceType[][];
 export type GameState = {
     board: BoardType;
     turn: PlayerType;
-    status?: GameStatusType;
+    status: GameStatusType;
 }

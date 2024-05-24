@@ -7,84 +7,33 @@ import { updatePosition } from "../helpers/functions"
 import Cell from "./Cell"
 import "./CheckersBoard.scss"
 
+// redux
+import { useDispatch } from "react-redux"
+import { incrementAIScore, incrementUserScore } from "../state/gameStats"
+import ScoreTracker from "./ScoreTracker"
+
 const CheckersBoard = () => {
+  const dispatch = useDispatch()
+
   const [gameState, setGameState] = useState<GameState>({
     board: structuredClone(initialBoard), // the new way of doing JSON.parse(JSON.stringify(x)) for deep clone
     turn: "player",
     status: "active",
   })
-  const [pieceCount, setPieceCount] = useState({
-    user: 0,
-    ai: 0,
-  })
 
   const [possibleUserMoves, setPossibleUserMoves] = useState<Move[]>([])
 
   useEffect(() => {
-    let aiPieceCount = 0
-    let userPieceCount = 0
-
-    for (let row = 0; row < gameState.board.length; row++) {
-      for (let col = 0; col < gameState.board[row].length; col++) {
-        const currentPiece = gameState.board[row][col]
-
-        // check for user pieces
-        if ([1, 3].includes(currentPiece)) {
-          userPieceCount++
-        }
-
-        // check for ai pieces
-        if ([2, 4].includes(currentPiece)) {
-          aiPieceCount += 1
-        }
-      }
-    }
-
-    // TODO: Revisit this because it's probably unecessary to store in a state
-    setPieceCount((prevState) => ({
-      ...prevState,
-      ai: aiPieceCount,
-      user: userPieceCount,
-    }))
-
-    if (
-      pieceCount.ai === 0 &&
-      pieceCount.user !== 0 &&
-      gameState.status !== "ended"
-    ) {
-      return console.log("user wins")
-    }
-    if (
-      pieceCount.user === 0 &&
-      pieceCount.ai !== 0 &&
-      gameState.status !== "ended"
-    ) {
-      return console.log("ai wins")
-    }
-
     // When the turn variable changes trigger the AI move
     if (gameState.turn === "AI") {
       setTimeout(() => {
         makeAIMove()
 
-        // Checks possible moves after AI moves
-        // const moves = getPossibleMoves("player")
-        // setPossibleUserMoves(moves)
+        getPossibleMoves('player')
       }, 500)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.turn])
-
-  useEffect(() => {
-    if (gameState.board.length) {
-      console.log(gameState.board);
-      
-      console.log("inside the possible user moves effect hook")
-      getPossibleMoves('player')
-
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameState.board])
 
   const isValidMove = (
     fromRow: number,
@@ -165,7 +114,7 @@ const CheckersBoard = () => {
           toCol
         )
 
-        setGameState({ board: newBoard, turn: "AI" })
+        setGameState({...gameState, board: newBoard, turn: "AI" })
       }
     }
 
@@ -206,7 +155,7 @@ const CheckersBoard = () => {
             newCol
           )
 
-          setGameState({ board: newBoard, turn: "AI" })
+          setGameState({ ...gameState, board: newBoard, turn: "AI" })
         }
       } else {
         makeDefaultMove()
@@ -230,7 +179,7 @@ const CheckersBoard = () => {
         move.to[1]
       )
 
-      setGameState({ board: newBoard, turn: "player" })
+      setGameState({...gameState, board: newBoard, turn: "player" })
     } else {
       setGameState({ ...gameState, turn: "player" })
     }
@@ -283,18 +232,15 @@ const CheckersBoard = () => {
       }
     }
 
-    // If there are no more moves end the game and display a winner
+    // If there are no more moves end the game, update the score and display a winner
     if (!moves.length) {
       if (player === "AI") {
-        // user wins
-        console.log("user wins")
-      } else {
-        // player wins
-        console.log("ai wins")
+        dispatch(incrementUserScore())
+      } else if (player === "player") {
+        dispatch(incrementAIScore())
       }
-
       setGameState({ ...gameState, status: "ended" })
-    }
+  }
 
     // Search the possible moves for overtaking opportunities.
     // If found, only return those options as valid moves
@@ -317,19 +263,16 @@ const CheckersBoard = () => {
       }
       return moves
     }
+  
   }
 
   const resetGame = () => {
     setGameState({ board: initialBoard, status: "active", turn: "player" })
-
-    console.log(initialBoard);
-    
-    console.log(gameState.board);
-    
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <ScoreTracker />
       <div className="checkers-board">
         {gameState.board.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
