@@ -88,7 +88,6 @@ const Cell = ({
           row={row}
           col={col}
           piece={piece}
-          possibleUserMoves={possibleUserMoves}
         />
       )}
     </div>
