@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import winCounterReducer from "./gameStats/index"
+import winCounterReducer from "./gameStats/winCounter"
+import timeCounterReducer from "./gameStats/timeCounter"
 
 export const store = configureStore({
     reducer: {
-        winCounterReducer
+        winCounterReducer,
+        timeCounterReducer
     }
 })
 
