@@ -1,0 +1,11 @@
+.checkers-board {
+  margin: 0 auto;
+  display: grid;
+  width: 800px;
+  height: 800px;
+  position: relative;
+}
+
+.row {
+  display: flex;
+}

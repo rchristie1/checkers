@@ -1,0 +1,43 @@
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #000;
+    
+  
+    &.dark {
+      background-color: #000;
+    }
+
+    &.player-assist {
+      border-color: rgba(0,0,0,0);
+
+      @keyframes flickerAnimation {
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-o-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-moz-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-webkit-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+
+      -webkit-animation: flickerAnimation 3.5s infinite;
+      -moz-animation: flickerAnimation 3.5s infinite;
+      -o-animation: flickerAnimation 3.5s infinite;
+      animation: flickerAnimation 3.5s infinite;
+    }
+}

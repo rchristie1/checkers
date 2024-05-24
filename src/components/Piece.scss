@@ -1,0 +1,38 @@
+.piece {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5em;
+
+    &.ai {
+        background-color: #fff;
+    }
+
+    &.player {
+        background-color: red;
+
+        &.grabbed {
+            opacity: 50%;
+        }
+    }
+
+    &.player-king {
+        background-color: gold;
+    }
+
+    &.ai-king {
+        background-color: green;
+    }
+
+    &:hover {
+        cursor: grab;
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+}
