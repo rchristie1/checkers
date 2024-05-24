@@ -15,20 +15,22 @@ import Modal from "./Modal"
 
 // redux
 import { useDispatch } from "react-redux"
-import { incrementAIScore, incrementUserScore } from "../state/gameStats/winCounter"
+import {
+  incrementAIScore,
+  incrementUserScore,
+} from "../state/gameStats/winCounter"
 import { resetTime } from "../state/gameStats/timeCounter"
 
 const CheckersBoard = () => {
   const dispatch = useDispatch()
 
-  const [winner, setWinner] = useState('')
+  const [winner, setWinner] = useState("")
   const [possibleUserMoves, setPossibleUserMoves] = useState<Move[]>([])
   const [gameState, setGameState] = useState<GameState>({
     board: structuredClone(initialBoard), // the new way of doing JSON.parse(JSON.stringify(x)) for deep clone
     turn: "player",
     status: "active",
   })
-
 
   useEffect(() => {
     // When the turn variable changes trigger the AI move
@@ -243,10 +245,10 @@ const CheckersBoard = () => {
     if (!moves.length) {
       if (player === "AI") {
         dispatch(incrementUserScore())
-        setWinner('Player')
+        setWinner("Player")
       } else if (player === "player") {
         dispatch(incrementAIScore())
-        setWinner('AI')
+        setWinner("AI")
       }
       setGameState({ ...gameState, status: "ended" })
     }
@@ -275,9 +277,13 @@ const CheckersBoard = () => {
   }
 
   const resetGame = () => {
-    setGameState({ board: initialBoard, status: "active", turn: "player" })
+    setGameState({
+      board: structuredClone(initialBoard),
+      status: "active",
+      turn: "player",
+    })
     dispatch(resetTime())
-    setWinner('');
+    setWinner("")
   }
 
   return (
