@@ -1,0 +1,37 @@
+// reference: https://codepen.io/cssinate/pen/jzeEdq
+@import url('https://fonts.googleapis.com/css?family=Sarpanch:900');
+
+$rotationAmt: -12;
+
+.modal {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    .background {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 40%;
+    }
+
+    .banner {
+        text-align: center;
+        position: absolute;
+        height: 200px;
+        width: 100%;
+        left: 0;
+        top: calc(50% - 200px);
+
+        transform: skew(#{$rotationAmt}deg) rotate(#{$rotationAmt}deg);
+        grid-area: text;
+        font-family: 'Sarpanch', sans-serif;
+        font-size: 20vmin;
+        margin: 0;
+        padding: 30px;
+        color: #1d9099;
+        text-shadow: 1vmin 1vmin 0 #E79C10, -1vmin -1vmin 0 #D53A33;
+    }
+}
