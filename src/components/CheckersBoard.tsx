@@ -4,24 +4,31 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { initialBoard } from "../states"
 import { updatePosition } from "../helpers/functions"
-import Cell from "./Cell"
 import "./CheckersBoard.scss"
+
+// components
+import ScoreTracker from "./ScoreTracker"
+import Timer from "./Timer"
+import Cell from "./Cell"
+import Button from "./Button"
+import Modal from "./Modal"
 
 // redux
 import { useDispatch } from "react-redux"
-import { incrementAIScore, incrementUserScore } from "../state/gameStats"
-import ScoreTracker from "./ScoreTracker"
+import { incrementAIScore, incrementUserScore } from "../state/gameStats/winCounter"
+import { resetTime } from "../state/gameStats/timeCounter"
 
 const CheckersBoard = () => {
   const dispatch = useDispatch()
 
+  const [winner, setWinner] = useState('')
+  const [possibleUserMoves, setPossibleUserMoves] = useState<Move[]>([])
   const [gameState, setGameState] = useState<GameState>({
     board: structuredClone(initialBoard), // the new way of doing JSON.parse(JSON.stringify(x)) for deep clone
     turn: "player",
     status: "active",
   })
 
-  const [possibleUserMoves, setPossibleUserMoves] = useState<Move[]>([])
 
   useEffect(() => {
     // When the turn variable changes trigger the AI move
@@ -29,7 +36,7 @@ const CheckersBoard = () => {
       setTimeout(() => {
         makeAIMove()
 
-        getPossibleMoves('player')
+        getPossibleMoves("player")
       }, 500)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,7 +121,7 @@ const CheckersBoard = () => {
           toCol
         )
 
-        setGameState({...gameState, board: newBoard, turn: "AI" })
+        setGameState({ ...gameState, board: newBoard, turn: "AI" })
       }
     }
 
@@ -179,7 +186,7 @@ const CheckersBoard = () => {
         move.to[1]
       )
 
-      setGameState({...gameState, board: newBoard, turn: "player" })
+      setGameState({ ...gameState, board: newBoard, turn: "player" })
     } else {
       setGameState({ ...gameState, turn: "player" })
     }
@@ -236,11 +243,13 @@ const CheckersBoard = () => {
     if (!moves.length) {
       if (player === "AI") {
         dispatch(incrementUserScore())
+        setWinner('Player')
       } else if (player === "player") {
         dispatch(incrementAIScore())
+        setWinner('AI')
       }
       setGameState({ ...gameState, status: "ended" })
-  }
+    }
 
     // Search the possible moves for overtaking opportunities.
     // If found, only return those options as valid moves
@@ -253,43 +262,51 @@ const CheckersBoard = () => {
     }
 
     if (takeableMoves.length) {
-      if(player === 'player') {
+      if (player === "player") {
         setPossibleUserMoves(takeableMoves)
       }
       return takeableMoves
     } else {
-      if(player === 'player') {
+      if (player === "player") {
         setPossibleUserMoves(moves)
       }
       return moves
     }
-  
   }
 
   const resetGame = () => {
     setGameState({ board: initialBoard, status: "active", turn: "player" })
+    dispatch(resetTime())
+    setWinner('');
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <ScoreTracker />
-      <div className="checkers-board">
-        {gameState.board.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`r${rowIndex}c${colIndex}`}
-                row={rowIndex}
-                col={colIndex}
-                piece={cell}
-                handleDrop={handleDrop}
-                possibleUserMoves={possibleUserMoves}
-              />
-            ))}
-          </div>
-        ))}
+      <div className="container">
+        <div className="game-details">
+          <ScoreTracker />
+          <Timer />
+        </div>
+
+        <div className="checkers-board">
+          {gameState.board.map((row, rowIndex) => (
+            <div key={rowIndex} className="row">
+              {row.map((cell, colIndex) => (
+                <Cell
+                  key={`r${rowIndex}c${colIndex}`}
+                  row={rowIndex}
+                  col={colIndex}
+                  piece={cell}
+                  handleDrop={handleDrop}
+                  possibleUserMoves={possibleUserMoves}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <Button resetGame={resetGame} />
+        {winner && <Modal player={winner} />}
       </div>
-      <button onClick={() => resetGame()}>Reset</button>
     </DndProvider>
   )
 }
