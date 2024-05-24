@@ -7,32 +7,36 @@
     align-items: center;
     font-weight: bold;
     font-size: 1.5em;
+    color: #000;
 
     &.ai {
-        background-color: #fff;
+        background: linear-gradient(#ffffff 0%, #dddddd 10%, #929292 50%, #5d5d5d 100%);
     }
 
     &.player {
-        background-color: red;
+        color: #fff;
+        background: linear-gradient(#f00202 0%, #bd0404 10%, #7d0404 50%, #670303 100%);
+
 
         &.grabbed {
             opacity: 50%;
         }
+
+        &:hover {
+            cursor: grab;
+        }
+    
+        &:active {
+            cursor: grabbing;
+        }
     }
 
     &.player-king {
-        background-color: gold;
+        background: linear-gradient(#ff4444 0%, #ff0606 10%, #b61919 50%, #970505 100%);
     }
 
     &.ai-king {
-        background-color: green;
+        background: linear-gradient(#ffffff 0%, #dddddd 10%, #929292 50%, #5d5d5d 100%);
     }
 
-    &:hover {
-        cursor: grab;
-    }
-
-    &:active {
-        cursor: grabbing;
-    }
 }
