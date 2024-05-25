@@ -4,9 +4,10 @@
 $rotationAmt: -12;
 
 .modal {
+    top: 0;
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
 
     .background {
         position: relative;
@@ -23,7 +24,7 @@ $rotationAmt: -12;
         height: 200px;
         width: 100%;
         left: 0;
-        top: calc(50% - 200px);
+        top: calc(50% - 100px);
 
         transform: skew(#{$rotationAmt}deg) rotate(#{$rotationAmt}deg);
         grid-area: text;

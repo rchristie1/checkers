@@ -1,10 +1,10 @@
 // reference: https://codepen.io/kocsten/pen/rggjXp
 .reset-button {
     z-index: 20;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
-    width: 220px;
-    height: 50px;
+    width: 320px;
+    height: 70px;
     border: none;
     outline: none;
     color: #fff;
@@ -12,6 +12,7 @@
     cursor: pointer;
     position: relative;
     border-radius: 10px;
+    margin-bottom: 40px;
 }
 
 .reset-button:before {
