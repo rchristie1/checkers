@@ -245,7 +245,7 @@ const CheckersBoard = () => {
     if (!moves.length) {
       if (player === "AI") {
         dispatch(incrementUserScore())
-        setWinner("Player")
+        setWinner("User")
       } else if (player === "player") {
         dispatch(incrementAIScore())
         setWinner("AI")

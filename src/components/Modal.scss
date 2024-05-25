@@ -28,9 +28,8 @@ $rotationAmt: -12;
         transform: skew(#{$rotationAmt}deg) rotate(#{$rotationAmt}deg);
         grid-area: text;
         font-family: 'Sarpanch', sans-serif;
-        font-size: 20vmin;
+        font-size: 15vmin;
         margin: 0;
-        padding: 30px;
         color: #1d9099;
         text-shadow: 1vmin 1vmin 0 #E79C10, -1vmin -1vmin 0 #D53A33;
     }
