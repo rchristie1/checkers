@@ -25,7 +25,7 @@ const Cell = ({
   handleDrop,
   possibleUserMoves,
 }: CellProps) => {
-  const [{ isOver }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: "piece",
     drop: (item: { row: number; col: number }) =>
       handleDrop(item.row, item.col, row, col),
@@ -48,6 +48,7 @@ const Cell = ({
   
         // apply classes to each of those cells while it's being hovered
         highlightCells.map((cell) => {
+          // each cell is created with an id identifier of it's row and column
           const el = document.getElementById(`r${cell.to[0]}c${cell.to[1]}`)
             el?.classList[action]("player-assist")
 
@@ -69,7 +70,6 @@ const Cell = ({
 
   // Dynamically add/remove classes
   const classes = ["cell"]
-  isOver && classes.push("hovered")
   cellIsOddNumber && classes.push("dark")
   piece === 1 || piece === 3 ? classes.push("player") : classes.push("ai")
 

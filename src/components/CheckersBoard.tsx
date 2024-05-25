@@ -150,7 +150,7 @@ const CheckersBoard = () => {
         })
 
         if (moveIsValid) {
-          // assigned for clarity on what each value represents
+          // assigned for clarity on what each value represents when passing to update position function
           const oldRow = moveIsValid?.from[0]
           const newRow = moveIsValid?.to[0]
           const oldCol = moveIsValid?.from[1]
