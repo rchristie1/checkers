@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { GameState, Move, PlayerType } from "../types"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import { initialBoard } from "../states"
+import { initialBoard } from "../helpers/board"
 import { updatePosition } from "../helpers/functions"
 import "./CheckersBoard.scss"
 
